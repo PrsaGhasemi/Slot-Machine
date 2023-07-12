@@ -1,4 +1,43 @@
+import random
+
 MAX_LINES = 3
+MAX_BET = 1000
+MIN_BET = 1
+
+ROWS = 3
+COLS = 3
+
+symbols_count = {
+    "A": 2,
+    "B": 4,
+    "C": 6,
+    "D": 8
+}
+
+def slotMachineGenerator(rows, cols, symbols):
+    allSymbols = []
+    for symbol, symbolCount in symbols.item():
+        for _ in range(symbolCount):
+            allSymbols.append(symbol)
+            print(allSymbols)
+    columns = []
+    for _ in range(cols):
+        column = []
+        availableSymbols = allSymbols[:]
+        for _ in range(rows):
+            generatedValue = random.choice(allSymbols)
+            print(generatedValue)
+            column.append(generatedValue)
+            availableSymbols.remove(generatedValue)
+    columns.append(column)
+
+def showGeneratedMachine(coloumns):
+    for row in range(len(coloumns[0])):
+        for i, coloumn in enumerate(coloumns):
+            if i != len(coloumns) - 1:
+                print(coloumn[row], end= " | ")
+            else: 
+                print(coloumn[row], end="")
 
 
 def deposit():
@@ -34,11 +73,11 @@ def getBetAmount():
         betAmount = input("how much do you wanna bet on each line? $")
         if betAmount.isdigit():
             betAmount = int(betAmount)
-            if 0 < betAmount <= wholeDeposit:
+            if MIN_BET < betAmount <= MAX_BET:
                 betAmount = int(betAmount)
                 break
             else: 
-                print(f"you can bet between 1$ and {wholeDeposit}$")
+                print(f"you can bet between {MIN_BET}$ and {MAX_BET}$")
         else:
             print("you can only bet with money! enter number")
     return betAmount
@@ -46,8 +85,16 @@ def getBetAmount():
 def main() :
     userBalance = deposit()
     chosenLines = number_of_lines_toBet()
-    betMoney = getBetAmount()
-    totalBet = betMoney * chosenLines
-    print(f"you are beting {betMoney}$ on {chosenLines} and  your total bet is {totalBet}$")
+    while True:
+        betMoney = getBetAmount()
+        totalBet = betMoney * chosenLines
+        if totalBet > userBalance:
+            print(f"you can't bet more than what you have, your balance is ${userBalance}")
+        else:
+            break
+    print(f"you are beting {betMoney}$ on {chosenLines} lines and  your total bet is {totalBet}$")
 
+slots = slotMachineGenerator(ROWS, COLS , symbols_count)
+showGeneratedMachine(slots)
+ 
 main()
