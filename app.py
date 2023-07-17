@@ -16,28 +16,27 @@ symbols_count = {
 
 def slotMachineGenerator(rows, cols, symbols):
     allSymbols = []
-    for symbol, symbolCount in symbols.item():
+    for symbol, symbolCount in symbols.items():
         for _ in range(symbolCount):
             allSymbols.append(symbol)
-            print(allSymbols)
     columns = []
     for _ in range(cols):
         column = []
         availableSymbols = allSymbols[:]
         for _ in range(rows):
             generatedValue = random.choice(allSymbols)
-            print(generatedValue)
-            column.append(generatedValue)
             availableSymbols.remove(generatedValue)
-    columns.append(column)
+            column.append(generatedValue)
+        columns.append(column)
+    return columns
 
-def showGeneratedMachine(coloumns):
-    for row in range(len(coloumns[0])):
-        for i, coloumn in enumerate(coloumns):
-            if i != len(coloumns) - 1:
+def showGeneratedMachine(columns):
+    for row in range(len(columns[0])):
+        for i, coloumn in enumerate(columns):
+            if i != len(columns) - 1:
                 print(coloumn[row], end= " | ")
             else: 
-                print(coloumn[row], end="")
+                print(coloumn[row])
 
 
 def deposit():
@@ -95,6 +94,7 @@ def main() :
     print(f"you are beting {betMoney}$ on {chosenLines} lines and  your total bet is {totalBet}$")
 
 slots = slotMachineGenerator(ROWS, COLS , symbols_count)
-showGeneratedMachine(slots)
+kir = showGeneratedMachine(slots)
+print(kir)
  
 main()
